@@ -1,13 +1,17 @@
+# .cargo/config.toml
+# ──────────────────────────────────────────────────────────────────────────────
+# Xtensa ESP32-S3 target — butuh Rust fork dari Espressif
+#   Setup: https://esp-rs.github.io/book/installation/index.html
+#   $ espup install          (install toolchain + target)
+#   $ . ~/export-esp.sh      (atau tambah ke shell profile)
+# ──────────────────────────────────────────────────────────────────────────────
+
+[target.xtensa-esp32s3-none-elf]
+runner = "probe-rs run --chip esp32s3"
+
 [build]
-target = "xtensa-esp32s3-espidf"
+target = "xtensa-esp32s3-none-elf"
 
-[target.xtensa-esp32s3-espidf]
-linker    = "ldproxy"
-rustflags = [ "--cfg", "espidf_time64" ]
-
+# build-std diperlukan untuk no_std tanpa std library
 [unstable]
-build-std = ["std", "panic_abort"]
-
-[env]
-ESP_IDF_VERSION = "v5.2.1"
-MCU             = "esp32s3"
+build-std = ["core"]

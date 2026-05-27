@@ -1,3 +1,5 @@
+// build.rs — wajib ada untuk esp-hal agar linker script terhubung
 fn main() {
-    embuild::espidf::sysenv::output();
+    println!("cargo:rustc-link-arg-bins=-Tlinkall.x");
+    println!("cargo:rustc-link-arg-bins=-Trom_functions.x");
 }

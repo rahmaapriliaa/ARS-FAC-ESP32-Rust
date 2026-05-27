@@ -1,0 +1,45 @@
+[package]
+name    = "ars-fac-esp32s3"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name    = "ars-fac-esp32s3"
+path    = "src/main.rs"        # ← wajib ada baris ini
+harness = false
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Dependencies  (esp-hal 0.22 ecosystem — gunakan `cargo update` jika perlu)
+# ──────────────────────────────────────────────────────────────────────────────
+[dependencies]
+esp-hal = { version = "0.22.0", features = ["esp32s3"] }
+
+esp-backtrace = { version = "0.14.0", features = [
+    "esp32s3",
+    "exception-handler",
+    "panic-handler",
+    "println",
+] }
+
+esp-println = { version = "0.12.0", features = [
+    "esp32s3",
+    "uart",             # output ke Virtual Terminal Proteus via UART0
+    "log",
+] }
+
+nb  = "1.1.0"           # non-blocking trait (ADC oneshot)
+
+# ──────────────────────────────────────────────────────────────────────────────
+# Build profiles
+# ──────────────────────────────────────────────────────────────────────────────
+[profile.dev]
+opt-level = "s"
+debug     = true
+lto       = false
+
+[profile.release]
+opt-level     = "s"
+debug         = false
+lto           = true
+codegen-units = 1
+strip         = false       # jaga debug symbols untuk probe-rs
